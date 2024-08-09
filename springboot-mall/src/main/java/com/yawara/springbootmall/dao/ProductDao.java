@@ -3,7 +3,10 @@ package com.yawara.springbootmall.dao;
 import com.yawara.springbootmall.dto.ProductRequest;
 import com.yawara.springbootmall.model.Product;
 
+import java.util.List;
+
 public interface ProductDao {
+    List<Product> getProducts();
 
     //根據productID回傳Product物件
     Product getProductById(Integer productId);
