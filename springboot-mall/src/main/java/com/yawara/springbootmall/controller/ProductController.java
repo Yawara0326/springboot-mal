@@ -49,4 +49,12 @@ public class ProductController {
         }
 
     }
+
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
+        productService.deleteProductById(productId);
+        //不需要加檢查判斷，因為前端在意的是商品是否不存在資料庫中
+        // 若本來就沒有在資料庫中，也符合前端想要的結果。
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
