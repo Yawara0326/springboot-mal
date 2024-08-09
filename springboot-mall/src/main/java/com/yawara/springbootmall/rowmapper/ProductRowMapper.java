@@ -17,7 +17,6 @@ public class ProductRowMapper implements RowMapper<Product> {
         product.setProductName(rs.getString("product_name"));
 
         //category是Enum類型的屬性，因此要使用string轉Enum的方法
-
         product.setCategory(ProductCategory.valueOf(rs.getString("category")));
 
 
@@ -25,8 +24,8 @@ public class ProductRowMapper implements RowMapper<Product> {
         product.setPrice(rs.getInt("price"));
         product.setStock(rs.getInt("stock"));
         product.setDescription(rs.getString("description"));
-        product.setCreateDate(rs.getDate("created_date"));
-        product.setLastModifiedDate(rs.getDate("last_modified_date"));
+        product.setCreateDate(rs.getTimestamp("created_date"));
+        product.setLastModifiedDate(rs.getTimestamp("last_modified_date"));
 
         return product;
     }
