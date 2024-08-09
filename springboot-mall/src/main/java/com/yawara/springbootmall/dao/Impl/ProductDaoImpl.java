@@ -1,7 +1,7 @@
 package com.yawara.springbootmall.dao.Impl;
 
 import com.yawara.springbootmall.dao.ProductDao;
-import com.yawara.springbootmall.modell.Product;
+import com.yawara.springbootmall.model.Product;
 import com.yawara.springbootmall.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

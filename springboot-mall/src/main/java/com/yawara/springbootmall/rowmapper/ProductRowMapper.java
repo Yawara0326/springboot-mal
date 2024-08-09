@@ -1,6 +1,7 @@
 package com.yawara.springbootmall.rowmapper;
 
-import com.yawara.springbootmall.modell.Product;
+import com.yawara.springbootmall.constant.ProductCategory;
+import com.yawara.springbootmall.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -14,7 +15,12 @@ public class ProductRowMapper implements RowMapper<Product> {
 
         product.setProductId(rs.getInt("product_id"));
         product.setProductName(rs.getString("product_name"));
-        product.setCategory(rs.getString("category"));
+
+        //category是Enum類型的屬性，因此要使用string轉Enum的方法
+
+        product.setCategory(ProductCategory.valueOf(rs.getString("category")));
+
+
         product.setImageUrl(rs.getString("image_url"));
         product.setPrice(rs.getInt("price"));
         product.setStock(rs.getInt("stock"));

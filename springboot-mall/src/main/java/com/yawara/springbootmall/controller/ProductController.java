@@ -1,6 +1,6 @@
 package com.yawara.springbootmall.controller;
 
-import com.yawara.springbootmall.modell.Product;
+import com.yawara.springbootmall.model.Product;
 import com.yawara.springbootmall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

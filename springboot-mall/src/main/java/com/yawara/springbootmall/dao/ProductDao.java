@@ -1,6 +1,6 @@
 package com.yawara.springbootmall.dao;
 
-import com.yawara.springbootmall.modell.Product;
+import com.yawara.springbootmall.model.Product;
 
 public interface ProductDao {
 
