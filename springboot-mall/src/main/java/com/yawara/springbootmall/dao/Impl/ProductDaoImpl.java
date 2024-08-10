@@ -45,6 +45,12 @@ public class ProductDaoImpl implements ProductDao {
             map.put("search","%"  + productQueryParam.getSearch() + "%");
         }
 
+        //因為有預設值所以不需要判斷排序的相關參數是否為空
+        //注意:SQL中的ORDER BY 不可像上面的sql字串使用:attribute。
+        // 只能像這樣下面這樣拼接字串。
+        sql = sql + " ORDER BY " +productQueryParam.getOrderBy() + " " + productQueryParam.getSort() ;
+
+
         List<Product> productList= namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
         return productList;
