@@ -33,18 +33,7 @@ public class ProductDaoImpl implements ProductDao {
         Map<String, Object> map = new HashMap<>();
 
         //查詢條件
-        if (productQueryParam.getCategory() != null){
-            sql = sql + " AND category = :category";
-            map.put("category", productQueryParam.getCategory().name());
-        }
-
-        if (productQueryParam.getSearch() != null){
-            //LIKE 模糊搜尋
-            sql += "  AND product_name LIKE :search";
-
-            //關鍵字出現在任一地方(字首字尾字中)就符合條件
-            map.put("search","%"  + productQueryParam.getSearch() + "%");
-        }
+        sql = addFilteringSql(sql,map,productQueryParam);
 
         Integer total = namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
 
@@ -59,18 +48,7 @@ public class ProductDaoImpl implements ProductDao {
         Map<String, Object> map = new HashMap<>();
 
         //查詢條件
-        if (productQueryParam.getCategory() != null){
-            sql = sql + " AND category = :category";
-            map.put("category", productQueryParam.getCategory().name());
-        }
-
-        if (productQueryParam.getSearch() != null){
-            //LIKE 模糊搜尋
-            sql += "  AND product_name LIKE :search";
-
-            //關鍵字出現在任一地方(字首字尾字中)就符合條件
-            map.put("search","%"  + productQueryParam.getSearch() + "%");
-        }
+        sql = addFilteringSql(sql,map,productQueryParam);
 
         //排序
         //因為有預設值所以不需要判斷排序的相關參數是否為空
@@ -161,6 +139,26 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productId", productId);
 
         namedParameterJdbcTemplate.update(sql,map);
+    }
+
+    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParam productQueryParam){
+
+        //查詢條件
+        if (productQueryParam.getCategory() != null){
+            sql = sql + " AND category = :category";
+            map.put("category", productQueryParam.getCategory().name());
+        }
+
+        if (productQueryParam.getSearch() != null){
+
+            //LIKE 模糊搜尋
+            sql += "  AND product_name LIKE :search";
+
+            //關鍵字出現在任一地方(字首字尾字中)就符合條件
+            map.put("search","%"  + productQueryParam.getSearch() + "%");
+        }
+
+        return sql;
     }
 
 }
