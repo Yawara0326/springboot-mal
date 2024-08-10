@@ -6,13 +6,17 @@ import com.yawara.springbootmall.dto.ProductRequest;
 import com.yawara.springbootmall.model.Product;
 import com.yawara.springbootmall.service.ProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 public class ProductController {
 
@@ -26,8 +30,11 @@ public class ProductController {
             @RequestParam(required = false) String search,
             //排序 Sorting
             @RequestParam(defaultValue = "created_date") String orderBy, //根據什麼欄位排序
-            @RequestParam(defaultValue = "desc") String sort //升冪或降冪排序
+            @RequestParam(defaultValue = "desc") String sort,//升冪或降冪排序
 
+            //分頁 pagination
+            @RequestParam(defaultValue = "5") @Max(100) @Min(0) Integer limit, //要取得幾筆數據
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset //要跳過多少數據
     ){
 
         ProductQueryParam productQueryParam = new ProductQueryParam();
@@ -35,6 +42,8 @@ public class ProductController {
         productQueryParam.setSearch(search);
         productQueryParam.setOrderBy(orderBy);
         productQueryParam.setSort(sort);
+        productQueryParam.setLimit(limit);
+        productQueryParam.setOffset(offset);
 
         List<Product> productList= productService.getProducts(productQueryParam);
 
