@@ -1,6 +1,7 @@
 package com.yawara.springbootmall.controller;
 
 import com.yawara.springbootmall.constant.ProductCategory;
+import com.yawara.springbootmall.dto.ProductQueryParam;
 import com.yawara.springbootmall.dto.ProductRequest;
 import com.yawara.springbootmall.model.Product;
 import com.yawara.springbootmall.service.ProductService;
@@ -23,7 +24,13 @@ public class ProductController {
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search
     ){
-        List<Product> productList= productService.getProducts(category, search);
+
+        ProductQueryParam productQueryParam = new ProductQueryParam();
+        productQueryParam.setCategory(category);
+        productQueryParam.setSearch(search);
+
+        List<Product> productList= productService.getProducts(productQueryParam);
+
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 

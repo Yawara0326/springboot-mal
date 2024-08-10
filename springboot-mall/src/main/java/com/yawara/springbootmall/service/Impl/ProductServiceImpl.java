@@ -1,7 +1,7 @@
 package com.yawara.springbootmall.service.Impl;
 
-import com.yawara.springbootmall.constant.ProductCategory;
 import com.yawara.springbootmall.dao.ProductDao;
+import com.yawara.springbootmall.dto.ProductQueryParam;
 import com.yawara.springbootmall.dto.ProductRequest;
 import com.yawara.springbootmall.model.Product;
 import com.yawara.springbootmall.service.ProductService;
@@ -17,8 +17,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
-        return productDao.getProducts(category, search);
+    public List<Product> getProducts(ProductQueryParam productQueryParam) {
+        return productDao.getProducts(productQueryParam);
     }
 
     @Override
