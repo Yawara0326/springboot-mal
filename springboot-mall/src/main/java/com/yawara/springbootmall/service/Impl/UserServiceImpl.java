@@ -1,6 +1,7 @@
 package com.yawara.springbootmall.service.Impl;
 
 import com.yawara.springbootmall.dao.UserDao;
+import com.yawara.springbootmall.dto.UserLoginRequest;
 import com.yawara.springbootmall.dto.UserRegisterRequest;
 import com.yawara.springbootmall.model.User;
 import com.yawara.springbootmall.service.UserService;
@@ -37,6 +38,29 @@ public class UserServiceImpl implements UserService {
         }
 
         return userDao.createUser(userRegisterRequest);
+
+    }
+
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+
+        //先確認是否有此帳號(email)
+        User user = userDao.getUserByEmail(userLoginRequest.getEmail());
+
+        //如果email不在資料庫中
+        if (user == null){
+            log.warn("該email {} 尚未註冊",userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        //密碼是否相符
+        if (userLoginRequest.getPassword().equals(user.getPassword())){
+            return user;
+        }else{
+            log.warn("eamil {} 的密碼不正確",userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
 
     }
 }

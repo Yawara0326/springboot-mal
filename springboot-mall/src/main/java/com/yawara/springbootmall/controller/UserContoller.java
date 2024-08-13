@@ -1,5 +1,6 @@
 package com.yawara.springbootmall.controller;
 
+import com.yawara.springbootmall.dto.UserLoginRequest;
 import com.yawara.springbootmall.dto.UserRegisterRequest;
 import com.yawara.springbootmall.model.User;
 import com.yawara.springbootmall.service.UserService;
@@ -26,6 +27,13 @@ public class UserContoller {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
 
+    }
+
+    //查詢，但會遇到密碼安全問題，因此用post
+    @PostMapping("/users/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
+        User user = userService.login(userLoginRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
 }
