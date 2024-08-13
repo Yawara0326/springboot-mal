@@ -14,7 +14,7 @@ public class Product {
   private  String description;
 
   //預設使用英國格林威治的時區 GMT+0
-  private  Date createDate;
+  private  Date createdDate;
   private  Date lastModifiedDate;
 
     public Integer getProductId() {
@@ -73,12 +73,12 @@ public class Product {
         this.description = description;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Date getLastModifiedDate() {
