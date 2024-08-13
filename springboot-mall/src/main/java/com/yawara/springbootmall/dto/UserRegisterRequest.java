@@ -1,9 +1,11 @@
 package com.yawara.springbootmall.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class UserRegisterRequest {
 
+    @Email //檢查是否為email格式
     @NotBlank
     private String email;
 
