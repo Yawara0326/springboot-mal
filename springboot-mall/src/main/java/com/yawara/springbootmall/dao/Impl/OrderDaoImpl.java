@@ -2,8 +2,12 @@ package com.yawara.springbootmall.dao.Impl;
 
 import com.mysql.cj.jdbc.MysqlParameterMetadata;
 import com.yawara.springbootmall.dao.OrderDao;
+import com.yawara.springbootmall.model.Order;
 import com.yawara.springbootmall.model.OrderItem;
+import com.yawara.springbootmall.rowmapper.OrderItemRowMapper;
+import com.yawara.springbootmall.rowmapper.OrderRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -24,7 +28,8 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public Integer createOrder(Integer userId, Integer totalAmount) {
         //創建訂單的sql指令
-        String sql = "INSERT INTO `order`(user_id, total_amount, create_date, last_modified_date) VALUES(:userId, :totalAmount, :createDate, :lastModifiedDate)";
+        String sql = "INSERT INTO `order`(user_id, total_amount, create_date, last_modified_date) " +
+                "VALUES(:userId, :totalAmount, :createDate, :lastModifiedDate)";
 
         //Map物件
         Map<String,Object> map = new HashMap<>();
@@ -47,9 +52,10 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void createOrerItems(Integer orderId, List<OrderItem> orderItemList) {
+    public void createOrderItems(Integer orderId, List<OrderItem> orderItemList) {
         //創建訂單資訊的sql
-        String sql = "INSERT INTO `order_item`(order_id, product_id, quantity, amount) VALUE(:orderId, :productId, :quantity, :amount)";
+        String sql = "INSERT INTO `order_item`(order_id, product_id, quantity, amount) " +
+                "VALUE(:orderId, :productId, :quantity, :amount)";
 
         //list[MapSqlParameterSorce]物件,長度 = orerItemList
         MapSqlParameterSource []  paramList = new MapSqlParameterSource[orderItemList.size()];
@@ -67,5 +73,43 @@ public class OrderDaoImpl implements OrderDao {
 
         namedParameterJdbcTemplate.batchUpdate(sql,paramList);
 
+    }
+
+    @Override
+    public Order getOrderById(Integer orderId) {
+
+        //查詢商品資訊的sql指令
+        String sql = "SELECT order_id, user_id, total_amount, create_date, last_modified_date " +
+                "FROM `order` WHERE order_id = :orderId";
+
+        //map物件
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId",orderId);
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql,map, new OrderRowMapper());
+
+        if (orderList.size()>0){
+            return orderList.get(0);
+        }else{
+            return null;
+        }
+
+    }
+
+    @Override
+    public List<OrderItem> getOrderItemsById(Integer orderId) {
+        //查詢商品詳細資訊的sql指令：order_item left join product
+        String sql = "SELECT oi.order_id, oi.product_id, oi.quantity, oi.amount, p.product_name, p.image_url  " +
+                "FROM `order_item` as oi " +
+                "LEFT JOIN product as p " +
+                "ON oi.product_id = p.product_id WHERE order_id = :orderId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId",orderId);
+
+        List<OrderItem> orderItemList= namedParameterJdbcTemplate.query(sql,map,new OrderItemRowMapper());
+
+
+        return orderItemList;
     }
 }
