@@ -5,7 +5,7 @@ import com.yawara.springbootmall.dao.ProductDao;
 import com.yawara.springbootmall.dao.UserDao;
 import com.yawara.springbootmall.dto.BuyItem;
 import com.yawara.springbootmall.dto.OrderQueryParams;
-import com.yawara.springbootmall.dto.createOrderRequest;
+import com.yawara.springbootmall.dto.CreateOrderRequest;
 import com.yawara.springbootmall.model.Order;
 import com.yawara.springbootmall.model.OrderItem;
 import com.yawara.springbootmall.model.Product;
@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
     //涉及修改兩張以上的資料表，加上Transactional，確保若遇到中斷情形，會rollback資料庫操作
     @Transactional
     @Override
-    public Integer createOrder(Integer userId, createOrderRequest createOrderRequest) {
+    public Integer createOrder(Integer userId, CreateOrderRequest createOrderRequest) {
 
         //檢查user存不存在
         User user = userDao.getUserById(userId);

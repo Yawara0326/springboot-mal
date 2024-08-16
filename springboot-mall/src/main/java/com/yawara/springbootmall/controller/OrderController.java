@@ -1,7 +1,7 @@
 package com.yawara.springbootmall.controller;
 
 import com.yawara.springbootmall.dto.OrderQueryParams;
-import com.yawara.springbootmall.dto.createOrderRequest;
+import com.yawara.springbootmall.dto.CreateOrderRequest;
 import com.yawara.springbootmall.model.Order;
 import com.yawara.springbootmall.service.OrderService;
 import com.yawara.springbootmall.util.Page;
@@ -26,7 +26,7 @@ public class OrderController {
     //訂單為使用者帳號的附屬功能
     @PostMapping("/users/{userId}/orders")
     public ResponseEntity<?> createOrder(@PathVariable Integer userId,
-                                         @RequestBody @Valid createOrderRequest createOrderRequest){
+                                         @RequestBody @Valid CreateOrderRequest createOrderRequest){
 
         Integer orderId = orderService.createOrder(userId, createOrderRequest);
 

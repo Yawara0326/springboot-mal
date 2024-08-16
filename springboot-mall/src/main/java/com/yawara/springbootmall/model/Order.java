@@ -7,9 +7,9 @@ public class Order {
 
    private Integer orderId;
    private Integer userId;
-   private Integer total_amount;
-   private Date create_date;
-   private Date last_modified_date;
+   private Integer totalAmount;
+   private Date createDate;
+   private Date lastModifiedDate;
 
    private List<OrderItem> orderItemList;
 
@@ -37,27 +37,27 @@ public class Order {
         this.userId = userId;
     }
 
-    public Integer getTotal_amount() {
-        return total_amount;
+    public Integer getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setTotal_amount(Integer total_amount) {
-        this.total_amount = total_amount;
+    public void setTotalAmount(Integer totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
-    public Date getCreate_date() {
-        return create_date;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setCreate_date(Date create_date) {
-        this.create_date = create_date;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
-    public Date getLast_modified_date() {
-        return last_modified_date;
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public void setLast_modified_date(Date last_modified_date) {
-        this.last_modified_date = last_modified_date;
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }

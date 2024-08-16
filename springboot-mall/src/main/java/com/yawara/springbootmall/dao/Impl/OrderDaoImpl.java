@@ -70,7 +70,7 @@ public class OrderDaoImpl implements OrderDao {
     public void createOrderItems(Integer orderId, List<OrderItem> orderItemList) {
         //創建訂單資訊的sql
         String sql = "INSERT INTO `order_item`(order_id, product_id, quantity, amount) " +
-                "VALUE(:orderId, :productId, :quantity, :amount)";
+                "VALUES (:orderId, :productId, :quantity, :amount)";
 
         //list[MapSqlParameterSorce]物件,長度 = orerItemList
         MapSqlParameterSource []  paramList = new MapSqlParameterSource[orderItemList.size()];
