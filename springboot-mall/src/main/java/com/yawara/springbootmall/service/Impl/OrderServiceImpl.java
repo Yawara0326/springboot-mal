@@ -4,6 +4,7 @@ import com.yawara.springbootmall.dao.OrderDao;
 import com.yawara.springbootmall.dao.ProductDao;
 import com.yawara.springbootmall.dao.UserDao;
 import com.yawara.springbootmall.dto.BuyItem;
+import com.yawara.springbootmall.dto.OrderQueryParams;
 import com.yawara.springbootmall.dto.createOrderRequest;
 import com.yawara.springbootmall.model.Order;
 import com.yawara.springbootmall.model.OrderItem;
@@ -34,6 +35,11 @@ public class OrderServiceImpl implements OrderService {
     private UserDao userDao;
 
     private final static Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
+
+    @Override
+    public Integer countOrders(OrderQueryParams orderQueryParams) {
+        return orderDao.countOrders(orderQueryParams);
+    }
 
     //涉及修改兩張以上的資料表，加上Transactional，確保若遇到中斷情形，會rollback資料庫操作
     @Transactional
@@ -105,4 +111,19 @@ public class OrderServiceImpl implements OrderService {
 
         return order;
     }
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+
+        List<Order> orderList = orderDao.getOrders(orderQueryParams);
+
+        for(Order order : orderList){
+            List<OrderItem> orderItemList = orderDao.getOrderItemsById(order.getOrderId());
+            order.setOrderItemList(orderItemList);
+        }
+
+        return orderList;
+    }
+
+
 }

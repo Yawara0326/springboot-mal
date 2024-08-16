@@ -2,6 +2,7 @@ package com.yawara.springbootmall.dao.Impl;
 
 import com.mysql.cj.jdbc.MysqlParameterMetadata;
 import com.yawara.springbootmall.dao.OrderDao;
+import com.yawara.springbootmall.dto.OrderQueryParams;
 import com.yawara.springbootmall.model.Order;
 import com.yawara.springbootmall.model.OrderItem;
 import com.yawara.springbootmall.rowmapper.OrderItemRowMapper;
@@ -24,6 +25,20 @@ public class OrderDaoImpl implements OrderDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Override
+    public Integer countOrders(OrderQueryParams orderQueryParams) {
+        String sql = "SELECT count(*) FROM `order` WHERE 1=1";
+
+        Map<String, Object> map = new HashMap<>();
+
+        //查詢條件
+        sql = addFilteringSql(sql, map, orderQueryParams);
+
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+
+        return count;
+    }
 
     @Override
     public Integer createOrder(Integer userId, Integer totalAmount) {
@@ -97,6 +112,29 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+
+        String sql = "SELECT order_id, user_id, total_amount, create_date, last_modified_date FROM `order` WHERE 1=1";
+
+        Map<String, Object> map = new HashMap<>();
+
+        sql = addFilteringSql(sql, map, orderQueryParams);
+
+        //排序：寫死，讓前端無法更改訂單的排序紀錄
+        sql = sql + " ORDER BY create_date DESC";
+
+        //分頁
+        sql = sql + " LIMIT :limit OFFSET :offset";
+        map.put("limit",orderQueryParams.getLimit());
+        map.put("offset",orderQueryParams.getOffset());
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql,map, new OrderRowMapper());
+
+        return orderList;
+
+    }
+
+    @Override
     public List<OrderItem> getOrderItemsById(Integer orderId) {
         //查詢商品詳細資訊的sql指令：order_item left join product
         String sql = "SELECT oi.order_id, oi.product_id, oi.quantity, oi.amount, p.product_name, p.image_url  " +
@@ -111,5 +149,13 @@ public class OrderDaoImpl implements OrderDao {
 
 
         return orderItemList;
+    }
+
+    public String addFilteringSql(String sql, Map<String, Object> map, OrderQueryParams orderQueryParams){
+        if (orderQueryParams.getUserId() != null){
+            sql = sql + " AND user_id = :userId";
+            map.put("userId", orderQueryParams.getUserId());
+        }
+        return sql;
     }
 }
